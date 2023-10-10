@@ -1,6 +1,10 @@
+# Tomcat
+
+## Pasos previos
 Cambiar el adaptador de red de las dos máquinas a adaptador puente y comprobar el ping entre las
 máquinas y el 8.8.8.8.
 
+## Comandos usados
 nmap -sV ip_red/mascara_red
 
 nmap -A ip_maquina/mascara_maquina
@@ -23,7 +27,7 @@ set username tomcat
 
 run
 
-
+## Seguimiento del exploit
 -Cambiar el adaptador de red a adaptador puente:
 Configurar las máquinas virtuales para que utilicen un adaptador de red en modo puente. 
 Esto permite que las máquinas virtuales se conecten directamente a la red física y obtengan direcciones IP 
@@ -54,4 +58,5 @@ el servicio Tomcat).
 Configuración de parámetros y ejecución:
 Se establecen los valores de RHOSTS, user_as_pass, y username utilizando los comandos set. Luego, se ejecuta el 
 módulo con el comando run. Este proceso intenta realizar una autenticación en el servicio Tomcat utilizando el 
-nombre de usuario "tomcat" como contraseña.
+nombre de usuario "tomcat" como contraseña. Podríamos aprovechar esto para ingresar en la cuenta de un usuario 
+que no ha cambiado la contraseña y la tiene por defecto
