@@ -7,6 +7,9 @@ máquinas y el 8.8.8.8.
 ## Comandos usados
 nmap -sV ip_red/mascara_red
 
+<img src=exploits_img/tomcat1.png alt="nmap tomcat" width="500" height="280">
+
+<img src=exploits_img/tomcat2.png alt="servicio tomcat activo" width="500" height="300">
 nmap -A ip_maquina/mascara_maquina
 
 msfconsole
