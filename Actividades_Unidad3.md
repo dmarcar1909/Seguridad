@@ -16,12 +16,16 @@ Para ello:
 
 - Ahora escribimos `secpol.msc` y presionamos Enter.
 
+<p align="center">
+  <img src="img/U3/A2_WS_1.png" alt="Ejecutar secpol.msc" width="223" height="133">
+</p>
+
 A continuación nos dirigimos hacia **"Directivas de cuenta" --> "Directivas de contraseñas"**
 
 Nos aparecerán las directivas y podemos cambiar cualquiera de ellas que queramos, en este ejemplo se puede ver que se cambian tres directivas.
 
 <p align="center">
-  <img src="img/A2_WS_1.png" alt="Windows Server directivas">
+  <img src="img/U3/A2_WS_2.png" alt="Windows Server directivas" width="471" height="373">
 </p>
 
 Aquí una breve explicación de que hace cada una de las directivas:
@@ -64,6 +68,13 @@ gpupdate /force
 ```
 
 Tras esto, ya habremos terminado la configuración básica en las directivas de contraseñas de Windows Server.
+
+<p align="center">
+  <img src="img/U3/A2_WS_3.png" alt="cmd gpupdate" width="440" height="219">
+</p>
+
+### <p align="center">**Ubuntu Server**</p>
+
 
 ## Actividad 3- Ataques contra contraseñas en Sistemas Windows – FICHERO SAM -
 
