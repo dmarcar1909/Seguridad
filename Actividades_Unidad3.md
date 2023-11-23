@@ -134,7 +134,7 @@ sudo pam-auth-update
 Nos aseguramos de que la opción `Unix authentication` esté seleccionada, ya que asegura que la configuración **pam_pwquality.so** se tenga en cuenta durante la untenticación del sistema.
 
 <p align="center">
-  <img src="img/U3/A2_US_4.png" alt="habilitar opcion unix authentication" width="598" height="100">
+  <img src="img/U3/A2_US_4.png" alt="habilitar opcion unix authentication" width="597" height="398">
 </p>
 
 Y de esta manera ya acabamos con la configuración en Ubuntu Server.
