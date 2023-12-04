@@ -312,7 +312,7 @@ sudo apt-get install john
 Ahora creamos un archivo txt a partir del archivo /etc/passwd y /etc/shadow
 
 ```bash
-sudo unshadow /etc/passwd /wtc/shadow >> hashes.out
+sudo unshadow /etc/passwd /etc/shadow >> hashes.out
 ```
 
 <p align="center">
@@ -329,6 +329,7 @@ sudo john --format=crypt ./hashes.out
   <img src="img/U3/A5_2.png" alt="john2">
 </p>
 
+Como podemos ver nos muestra el usuario y contraseña de en este caso francisco, un usuario que cree para hacer la prueba.
 
 
 ## Actividad 6.- Realiza un listado de este tipo de herramientas y analiza la instalación y configuración de 2 congeladores
