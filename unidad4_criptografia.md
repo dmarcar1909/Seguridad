@@ -1,4 +1,4 @@
-# Actividades Unidad 4 Seguridad - Criptografía
+![image](https://github.com/dmarcar1909/Seguridad/assets/117440310/73b26105-b934-4a69-963c-fe40bf2e2482)# Actividades Unidad 4 Seguridad - Criptografía
 
 Autor: Damián Martín Carrasco
 
@@ -352,3 +352,322 @@ Y comprobamos ahora que se envía el correo correctamente.
 
 ### Tarea 3
 
+En primer lugar tenemos que descargar las cosas necesarias que nos indican.
+
+<p align="center">
+  <img src="img/U4/pdf3_10.png">
+</p>
+
+Y luego usamos los comandos de la guía para comprobar la iso, como podemos ver nos muestra la información del primero y no de los otros dos, ya que solo he descargado el primero.
+
+<p align="center">
+  <img src="img/U4/pdf3_11.png">
+</p>
+
+Para verificar que el contenido del hash que hemos utilizado no haya sido manipulado, usamos la firma digital que se encuentra en el repositorio.
+
+Descargamos la clave pública del firmante mediante
+
+```bash
+gpg --keyserver keyring.debian.org --recv 6294BE9B
+```
+
+Y verificamosla firma de los archivos de suma de comprobación.
+
+```bash
+gpg --verify SHA512SUMS.sign SHA512SUMS
+```
+
+<p align="center">
+  <img src="img/U4/pdf3_12.png">
+</p>
+
+### Tarea 4
+
+1. **Software utilizado por apt secure para criptografía asimétrica:**
+   Apt secure utiliza GnuPG (GNU Privacy Guard) para realizar la criptografía asimétrica.
+
+2. **Comando apt-key:**
+   El comando `apt-key` se utilizaba anteriormente para gestionar las claves GPG del sistema, pero ha sido considerado obsoleto y se desaconseja su uso en versiones recientes de apt. Se recomienda utilizar el mecanismo de gestión de claves incorporado en GnuPG. El comando `apt-key list` mostraba la lista de claves GPG agregadas al sistema.
+
+3. **Fichero que guarda el anillo de claves de apt-key:**
+   El anillo de claves que gestionaba `apt-key` se guardaba en el directorio `/etc/apt/trusted.gpg` y `/etc/apt/trusted.gpg.d/`. Sin embargo, hay que tener en cuenta que el uso de `apt-key` ha sido desaconsejado, y se recomienda utilizar GnuPG directamente.
+
+4. **Contenido de los archivos Release y Release.gpg:**
+   - El archivo `Release` de un repositorio de paquetes contiene información sobre las versiones de los paquetes disponibles, sus dependencias y otra información relevante.
+   - El archivo `Release.gpg` es la firma GPG del archivo `Release`. Se utiliza para verificar la autenticidad e integridad del archivo `Release`.
+
+5. **Proceso para asegurar la legitimidad de los archivos descargados:**
+   - Durante el proceso de `apt update`, se descargan los archivos `Release` y `Release.gpg` del repositorio.
+   - La firma GPG (`Release.gpg`) se verifica utilizando la clave pública del repositorio para garantizar la autenticidad del archivo `Release`.
+   - Si la firma es válida, se utiliza la información en el archivo `Release` para construir la base de datos local de paquetes disponibles.
+   - Los paquetes se descargan de los repositorios utilizando la información verificada.
+
+6. **Agregar el repositorio de VirtualBox con su clave pública:**
+   - Agrega el repositorio de VirtualBox al archivo de fuentes de apt. Puedes hacerlo creando un nuevo archivo, por ejemplo, `/etc/apt/sources.list.d/virtualbox.list`, y añadiendo la línea:
+
+     ```bash
+     deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian buster contrib
+     ```
+
+     (Hay que cambiar `buster` por el nombre de tu versión de Debian).
+
+   - Descarga e importa la clave pública de VirtualBox:
+
+     ```bash
+     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | gpg --dearmor > /usr/share/keyrings/virtualbox-archive-keyring.gpg
+     ```
+
+   - Actualiza la lista de paquetes:
+
+     ```bash
+     sudo apt-get update
+     ```
+
+   - Ahora puedes instalar VirtualBox u Oracle VM VirtualBox desde este repositorio. Estos comandos pueden variar según la versión específica de Debian que usemos.
+
+### Tarea 5
+
+1. **Cifrado de la información en el protocolo:**
+   - **Cifrado Simétrico:** En el cifrado simétrico, una clave única se comparte entre el cliente y el servidor. Esta clave se utiliza tanto para cifrar como para descifrar la información. Es eficiente pero requiere que ambas partes compartan la clave de forma segura.
+   
+   - **Cifrado Asimétrico:** En el cifrado asimétrico, cada entidad tiene un par de claves: pública y privada. La clave pública se comparte abiertamente, mientras que la clave privada se mantiene secreta. La información cifrada con la clave pública solo puede descifrarse con la clave privada correspondiente. Este método es útil para la autenticación y el intercambio seguro de claves.
+
+2. **Métodos de autenticación:**
+   - **Por Contraseña:** El cliente envía una contraseña al servidor para la autenticación. Este método es simple pero susceptible a ataques de fuerza bruta y captura de contraseña.
+
+   - **Utilizando un Par de Claves Públicas y Privadas:** Se genera un par de claves: una pública y una privada. La clave pública se comparte con el servidor, mientras que la clave privada se guarda en el cliente. Durante la autenticación, el cliente firma un desafío del servidor con su clave privada, y el servidor verifica la firma utilizando la clave pública del cliente.
+
+3. **Contenido del fichero `~/.ssh/known_hosts`:**
+   - Este fichero almacena las claves públicas de los servidores a los que el cliente se ha conectado anteriormente. Cuando te conectas a un servidor SSH, se compara la clave pública del servidor con la que está almacenada en `known_hosts`. Si la clave no coincide, el cliente emite una advertencia para evitar posibles ataques de hombre en el medio.
+
+4. **¿Qué significa este mensaje que aparece la primera vez que nos conectamos a un servidor?**
+
+$ ssh debian@172.22.200.74
+The authenticity of host '172.22.200.74 (172.22.200.74)' can't 
+be established.
+ECDSA key fingerprint is
+SHA256:7ZoNZPCbQTnDso1meVSNoKszn38ZwUI4i6saebbfL4M.
+Are you sure you want to continue connecting (yes/no)? 
+
+**"The authenticity of host '172.22.200.74 (172.22.200.74)' can't be established":**
+
+   - Indica que la autenticidad del host (servidor) no puede ser confirmada en este momento. Suele suceder la primera vez que te conectas a un nuevo servidor o cuando el servidor ha cambiado su clave desde la última conexión.
+
+**"ECDSA key fingerprint is SHA256:7ZoNZPCbQTnDso1meVSNoKszn38ZwUI4i6saebbfL4M":**
+   - Muestra la huella digital (fingerprint) de la clave pública del servidor. Es una representación única de la clave y se utiliza para identificar el servidor. La huella digital se calcula utilizando el algoritmo de firma ECDSA y se presenta en formato SHA256.
+
+**"Are you sure you want to continue connecting (yes/no)?":**
+   - Pregunta si estás seguro de que deseas continuar con la conexión. Antes de responder, debes verificar la autenticidad de la huella digital. Si estás seguro de que la conexión es legítima y que la huella digital corresponde al servidor al que intentas conectarte, puedes responder "yes" para continuar.
+
+9. **En ocasiones cuando estamos trabajando en el cloud, y reutilizamos una ip flotante nos aparece este mensaje:**
+
+$ ssh debian@172.22.200.74
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ @ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+ Someone could be eavesdropping on you right now (man-in-themiddle attack)!
+ It is also possible that a host key has just been changed.
+ The fingerprint for the ECDSA key sent by the remote host is
+SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.
+ Please contact your system administrator.
+Add correct host key in /home/jose/.ssh/known_hosts to get rid 
+of this message.
+Offending ECDSA key in /home/jose/.ssh/known_hosts:103
+remove with:
+ssh-keygen -f "/home/jose/.ssh/known_hosts" -R 
+"172.22.200.74"
+ECDSA host key for 172.22.200.74 has changed and you have 
+requested strict checking.
+
+Este mensaje indica que la identificación del host remoto ha cambiado desde la última vez que se conectó a la dirección IP especificada (172.22.200.74).
+
+1. **"WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!":**
+   - Advierte que la identificación del host remoto ha cambiado desde la última conexión.
+
+2. **"IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY! Someone could be eavesdropping on you right now (man-in-the-middle attack)!":**
+   - Advierte sobre la posibilidad de un ataque de hombre en el medio, donde alguien podría estar interceptando tu conexión y realizando actividades maliciosas.
+
+3. **"It is also possible that a host key has just been changed. The fingerprint for the ECDSA key sent by the remote host is SHA256:W05RrybmcnJxD3fbwJOgSNNWATkVftsQl7EzfeKJgNc.":**
+   - Informa que otra posibilidad es que la clave del host haya cambiado recientemente. Muestra la nueva huella digital de la clave ECDSA del host remoto.
+
+4. **"Please contact your system administrator.":**
+   - Sugiere que te pongas en contacto con el administrador del sistema para confirmar el cambio o investigar cualquier actividad sospechosa.
+
+5. **"Add correct host key in /home/jose/.ssh/known_hosts to get rid of this message. Offending ECDSA key in /home/jose/.ssh/known_hosts:103 remove with: ssh-keygen -f "/home/jose/.ssh/known_hosts" -R "172.22.200.74":**
+   - Proporciona instrucciones sobre cómo solucionar el problema. Puedes eliminar la entrada antigua del archivo `known_hosts` con el comando `ssh-keygen` proporcionado.
+
+6. **"ECDSA host key for 172.22.200.74 has changed and you have requested strict checking.":**
+   - Indica que la clave ECDSA del host para la dirección IP especificada ha cambiado y que tienes configurada la verificación estricta de claves.
+  
+## Parte 4.- 
+
+### Tarea 1 Generación de claves
+
+Para generar un par de claves usando GPG podemos usar simplemente `gpg --gen-key`.
+
+<p align="center">
+  <img src="img/U4/pdf4_1.png">
+</p>
+
+El directorio predeterminado donde se guargan las claves es `/home/usuario/.gnupg/` o lo que es lo mismo `~/.gnupg/`.
+
+Para listar las claves públicas debemos usar este comando `gpg --list-keys`.
+
+<p align="center">
+  <img src="img/U4/pdf4_2.png">
+</p>
+
+Este comando mostrará la información sobre las claves públicas almacenadas. Los datos incluirán:
+
+- Clave pública ID: Identificador único de la clave pública.
+- Tipo de clave y tamaño: Algoritmo y longitud de la clave.
+- Fecha de creación: Fecha en que se generó la clave.
+- Fecha de expiración: Si se estableció una fecha de expiración.
+- Propietario: Dirección de correo electrónico asociada con la clave.
+
+Para indicar que tenga 1 mes de validez debemos hacer lo siguiente:
+
+```bash
+gpg --edit-key [ID_DE_CLAVE]
+expire
+1m
+save
+```
+
+De esta manera editaremos correctamente la caducidad, hemos de copiar primero el ID de la clave.
+
+<p align="center">
+  <img src="img/U4/pdf4_3.png">
+</p>
+
+Y para listar las claves privadas simplemente tenemos que hacer `gpg --list-secret-keys`.
+
+<p align="center">
+  <img src="img/U4/pdf4_4.png">
+</p>
+
+### Tarea 2 Importar / exportar clave pública
+
+Exportamos el par de claves usando gpg --export y --armor para ASCII
+
+```bash
+gpg --export --armor damimc21@gmail.com > clave_publica.asc
+```
+
+Y lo enviamos a la otra máquina con scp de nuevo.
+
+<p align="center">
+  <img src="img/U4/pdf2_6.png">
+</p>
+
+Ahora en la máquina a la que le hemos pasado el par de claves, añadimos el par de claves al llavero, usando gpg --import
+
+```bash
+gpg --import clave_publica.asc
+```
+
+Y vemos que se importa correctamente.
+
+<p align="center">
+  <img src="img/U4/pdf2_7.png">
+</p>
+
+Comprobamos.
+
+<p align="center">
+  <img src="img/U4/pdf4_5.png">
+</p>
+
+### Tarea 3 Cifrado asimétrico con claves públicas   
+
+Primero encriptamos un archivo y se lo enviamos a alguien, en este caso a otra máquina virtual mediante ssh, con scp.
+
+para encriptar el archivo.
+
+<p align="center">
+  <img src="img/U4/pdf4_6.png">
+</p>
+
+Después de recipient podemos poner el nombre que se le dio al dueño de las claves.
+
+Tras enviarlo a la otra máquina podemos observar que al principio no deja descifrarlo porque no tiene la clave secreta, tras hacer el import con la clave privada, volvemos a ejecutar el comando y ya si lo desencripta exitosamente.
+
+<p align="center">
+  <img src="img/U4/pdf4_7.png">
+</p>
+
+Y para borrar las claves, primero hay que borrar la secreta, de la siguiente forma.
+
+<p align="center">
+  <img src="img/U4/pdf4_8.png">
+</p>
+
+Y podemos comprobar que ya no existe.
+
+Y tras borrar la secreta podemos borrar la publica, de igual manera.
+
+<p align="center">
+  <img src="img/U4/pdf4_9.png">
+</p>
+
+También se queda sin ninguna clave pública.
+
+### Tarea 4 Exportar clave a un servidor público de claves PGP
+
+Para generar una clace de revocación lo primero que tenemos que hacer es listar las claves y coger el id de la que queremos generar la clave de revocación, después le introducimos el comando `gpg --gen-revoke 'id'` 
+
+Tras esto tendremos que responder a unas pocas preguntas y finalmente generaremos el código de revocación.
+
+<p align="center">
+  <img src="img/U4/pdf4_10.png">
+</p>
+
+Ahora para subir la clave pública a un servidor tendremos que hacerlo con el comando `gpg --send-keys --keyserver`
+
+En este caso he probado 2 porque el primero no me funcionaba, pero el segundo si.
+
+<p align="center">
+  <img src="img/U4/pdf4_11.png">
+</p>
+
+Para borrar la clave pública de un compañero tendríamos que hacer lo siguiente `gpg --delete-key 'RSA'`
+
+para descargarlo lo haremos de la siguiente manera `gpg --keyserver 'server' --recv-key 'id'`
+
+### Tarea 5 Cifrado asimétrico con openssl
+
+Con openssl tenemos que generar primero la clave privada y a partir de esa clave privada generar clave pública.
+
+Primero ejecutamos `openssl genpkey -algorithm RSA -out private_key.pem`
+
+Y luego ejecutamos a partir del otro `openssl pkey -in private_key.pem -pubout -out public_key.pem`
+
+<p align="center">
+  <img src="img/U4/pdf4_12.png">
+</p>
+
+De esa manera lo tenemos.
+
+Ahora lo enviamos al compañero, en este caso otra máquina virtual.
+
+<p align="center">
+  <img src="img/U4/pdf4_13.png">
+</p>
+
+Y lo hemos cifrado con clave pública de la otra máquina.
+
+<p align="center">
+  <img src="img/U4/pdf4_14.png">
+</p>
+
+Para descifrarlo simplemente abría que poner
+
+```bash
+openssl pkeyutl -decrypt -in arch_cifrado.enc -out descifrado.txt -inkey public_key.pem
+```
+
+## Parte 5.- CERTIFICADOS DIGITALES CON SSL
+
+NO TENGO EL CERTIFICADO DIGITAL
