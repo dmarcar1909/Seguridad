@@ -264,3 +264,91 @@ Pasamos el archivo a la otra máquina, y verificamos aquí que está firmado.
 <p align="center">
   <img src="img/U4/pdf2_10.png">
 </p>
+
+## Parte 3.- INTEGRIDAD, AUTENTICACIÓN, FIRMA
+
+### 1. Manda un documento y la firma electrónica del mismo a un compañero. Verifica la firma que tu has recibido.
+
+Creamos un fichero nuevo, lo firmamos con `gpg --sign`, lo enviamos y luego lo verificamos con `gpg --verify`
+
+<p align="center">
+  <img src="img/U4/pdf3_1.png">
+</p>
+
+### 2. ¿Qué significa el mensaje que aparece en el momento de verificar la firma?
+
+3. gpg: Firma correcta de "Pepe D <josedom24@gmail.com>" 
+[desconocido]
+
+**Esta línea indica que la firma electrónica ha sido verificada correctamente y que el documento fue firmado por la entidad con la dirección de correo electrónico "josedom24@gmail.com" y el nombre "Pepe D".**
+
+4. gpg: ATENCIÓN: ¡Esta clave no está certificada por una firma de 
+confianza!
+
+**Este mensaje advierte que la clave pública utilizada para verificar la firma no tiene una certificación de confianza.**
+
+5. gpg: No hay indicios de que la firma pertenezca al 
+propietario.
+
+**Esta línea indica que, según la información disponible, no hay pruebas directas de que la clave pertenezca al propietario declarado ("Pepe D").**
+
+6. Huellas dactilares de la clave primaria: E8DD 5DA9 3B88 F08A 
+DA1D 26BF 5141 3DDB 0C99 55FC
+
+**Estas son las huellas dactilares (fingerprints) de la clave pública principal. Son una forma única de identificar una clave y deberían coincidir con las que "Pepe D" te ha proporcionado en persona o a través de un canal seguro.**
+
+
+### Ejercicios 7, 8, 9 y 10 de Tarea 1
+
+Primero listamos las firmas asociadas con las claves públicas y privadas, para ello `gpg --list-sigs` y compiamos el **sig**.
+
+<p align="center">
+  <img src="img/U4/pdf3_2.png">
+</p>
+
+Luego enviamos el id que habiamos copiado y lo subimos a un servidor.
+
+<p align="center">
+  <img src="img/U4/pdf3_3.png">
+</p>
+
+Y ahora importamos la clave de nuestro compañero.
+
+<p align="center">
+  <img src="img/U4/pdf3_4.png">
+</p>
+
+Firmamos la clave de nuestro compañero tras importarla.
+
+<p align="center">
+  <img src="img/U4/pdf3_5.png">
+</p>
+
+Ahora podemos comprobar que tiene las dos firmas la clave.
+
+<p align="center">
+  <img src="img/U4/pdf3_6.png">
+</p>
+
+### Tarea 2
+
+Abrimos la aplicación de correo, le damos a Editar y preferencias, luego nos dirigimos hasta **Preferencias del editor** luego a **Firmas**, allí le damos a **Añadir** y ponemos nuestra nueva firma con el id publico que copiamos antes.
+
+<p align="center">
+  <img src="img/U4/pdf3_7.png">
+</p>
+
+Ahora ya podemos enviar un nuevo mensaje, le damos a **Nuevo** y allí ponemos el destinatario, en este caso será Jesús, le ponemos un asunto y un mensaje y luego en **Opciones** marcamos la opción **Cifrar con PGP** y en **Firma** ponemos pública.
+
+<p align="center">
+  <img src="img/U4/pdf3_8.png">
+</p>
+
+Y comprobamos ahora que se envía el correo correctamente.
+
+<p align="center">
+  <img src="img/U4/pdf3_9.png">
+</p>
+
+### Tarea 3
+
